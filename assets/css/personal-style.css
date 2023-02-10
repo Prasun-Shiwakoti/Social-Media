@@ -1,0 +1,94 @@
+.main-menu{
+    width: 80%;
+}
+.main-menu form{
+    text-align: center;
+}
+.main-menu form button {
+    color: black;
+    background-color: transparent;
+    padding: 0;
+}
+.main-menu form input {
+    height: 100%;
+    width: 60%;
+}
+.username{
+    display: inline;
+    cursor: pointer;
+}
+
+.timeline-info > ul > li{
+    margin-left: 20%;
+}
+
+.mh-form button{
+    line-height: 20px !important;
+    background: transparent;
+}
+
+.res-menu ul li span{
+    position: unset;
+    margin-right: 10px;
+}
+.res-menu i{
+    margin-right: 10px;
+}
+.res-menu ul li span::after{
+    left: 26px;
+    top: 18px;
+}
+
+.res-menu div span{
+    position: relative;
+    top: 19px;
+    left: -17px;
+}
+.res-menu div span::after{
+    left: 6px;
+    top: 6px;
+}
+.res-menu .userInfo{
+    padding: 10px 10px 10px 20px;
+}
+.res-menu .userInfo img{
+    border-radius: 100%;
+}
+
+.allPostTitle {
+    background: none;
+    color: #424242;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 0px 20px 10px;
+    text-transform: uppercase;
+    width: 100%;
+    border: none;
+    position: relative;
+}
+
+.allPostTitle::before{
+    bottom: 0;
+    content: "";
+    height: 2px;
+    left: 20px;
+    position: absolute;
+    width: 20%;
+    background: #088dcd;
+}
+
+.nearby-contact{
+    position: absolute;
+    top: 10px;
+    left: 0;
+    background-color: white;
+    padding: 10px;
+    width: 54vw;
+}
+
+.pepl-info a.add-butn{
+    position: relative !important;
+    top: 0px !important;
+    left: 10px;
+}

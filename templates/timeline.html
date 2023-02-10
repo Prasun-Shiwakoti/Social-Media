@@ -1,0 +1,188 @@
+{%load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<title>{{friend.fname}}-Timeline</title>
+
+
+	<link rel="icon" href="{% static 'images/my-logo.png' %}" type="image/png" sizes="16x16">
+
+	<link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/color.css' %}">
+	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+	<link rel="stylesheet" href="{% static 'css/personal-style.css' %}">
+
+</head>
+
+<body>
+	<!--<div class="se-pre-con"></div>-->
+	<div class="theme-layout">
+
+		{% include 'navbar.html' %} {% block nav %} {% endblock %}
+		<section>
+			<div class="feature-photo">
+				<figure><img src="{% static 'images/resources/timeline-1.jpg' %}" alt=""></figure>
+				<div class="add-btn">
+					<span>{{friend.followers}} Friends</span>
+					<a href="#" title="" data-ripple="" class="addFriend" username="{{friend.username}}" onclick="this.innerText = 'Added Friend'">Add Friend</a>
+				</div>
+				<div class="container-fluid">
+					<div class="row merged">
+						<div class="col-lg-2 col-sm-3">
+							<div class="user-avatar">
+								<figure>
+									<img src="{{friend.image.url}}" alt="" style="max-height: 140px;">
+								</figure>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section><!-- top area -->
+
+		<section>
+			<div class="gap gray-bg">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="row" id="page-contents">
+								<div class="col-lg-3">
+									<aside class="sidebar static">
+										{% include 'addFriends.html' %} {% block addFriends %} {% endblock %}
+									</aside>
+								</div><!-- sidebar -->
+								<div class="col-lg-6">
+									<div class="allPostTitle">
+										POSTS FROM {{friend.fname}} {{friend.lname}}
+									</div><!-- add post new box -->
+									<div class="loadMore">
+										{% for post in posts %}
+										<div class="central-meta item">
+											<div class="user-post">
+												<div class="friend-info">
+													<figure>
+														<img src="{{post.PublisherImage.url}}" alt="">
+													</figure>
+													<div class="friend-name">
+														<ins><a title="">{{post.Publisher}}</a></ins>
+														<span>published: {{post.PublishDate}}</span>
+													</div>
+													<div class="post-meta">
+														<div class="description">
+															<p>
+																{{post.Content}}
+															</p>
+														</div>
+														{% if post.Image %}
+														<img src="{{post.Image.url}}" alt="">
+														{% endif %}
+
+														<div class="we-video-info">
+															<ul>
+																<li>
+																	<span class="comment" data-toggle="tooltip"
+																		title="Comments">
+																		<i class="fa fa-comments-o"></i>
+																		<ins>{{post.totalComments}}</ins>
+																	</span>
+																</li>
+																<li>
+																	<span class="like" data-toggle="tooltip"
+																		title="like"
+																		onclick="likePost(this, '{{post.id}}', 1)">
+																		{% if user.username in post.getLikers %}
+																		<i class="likedButton">❤️</i>
+																		{% else %}
+																		<i class="ti-heart"></i>
+																		{% endif %}
+
+																		<ins>{{post.totalLikes}}</ins>
+
+																	</span>
+																</li>
+																<li class="social-media">
+																	<div class="menu">
+																		<div class="btn trigger">
+																			<i class="fa fa-share-alt"></i>
+																		</div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+												<div class="coment-area">
+													<ul class="we-comet">
+
+														{% for comments in post.getComments %}
+														<script>
+														</script>
+														<li>
+															<div class="comet-avatar">
+																<img src="media/{{comments.commenter.image}}" alt=""
+																	style="height:45px; width:45px;">
+															</div>
+															<div class="we-comment">
+																<div class="coment-head">
+																	<h5><a title="">{{comments.commenter.fname}}
+																			{{comments.commenter.lname}}</a></h5>
+																	<!-- <span>1 week ago</span> -->
+
+																</div>
+																<p>{{comments.comment}}
+																</p>
+															</div>
+														</li>
+														{% endfor %}
+
+														<li class="post-comment">
+															<div class="comet-avatar">
+																<img src="{{self.image.url}}" alt="">
+															</div>
+															<div class="post-comt-box">
+																<form method="post" action="/addComment"> {% csrf_token %}
+																	<input type="text" value="{{post.id}}" name="id"
+
+																		style="display: none;">
+																	<textarea placeholder="Post your comment"
+																		name="comment" required></textarea>
+																	<button type="submit">Comment</button>
+																</form>
+															</div>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										{% endfor %}
+									</div>
+								</div><!-- centerl meta -->
+								<div class="col-lg-3">
+									<aside class="sidebar static">
+										{% include 'friends.html' %} {% block friends %} {% endblock %}
+									</aside>
+								</div><!-- sidebar -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<script src="{% static 'js/main.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+{% load static %}
+{% block addFriends %}
+
+
+<div class="widget stick-widget">
+    <h4 class="widget-title">Add Friends</h4>
+    <ul class="followers">
+        {% for user in all_users%}
+            <li>
+                <figure><img src="{{user.image.url}}" alt="" style="height:45px; width:45px;">
+                </figure>
+                <div class="friend-meta">
+                    <h4><a href="/timeline?u={{user.username}}">{{user.fname}} {{user.lname}}</a></h4>
+                    <a href="#" title="" class="underline addFriend" username="{{user.username}}" >Add Friend</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% csrf_token %}
+</div><!-- who's following -->
+
+<script>
+    window.onload = function(){
+        window.addfriendrequest = function(elem){
+            $.ajax({
+                url: "/addFriend",
+                method: "POST",
+                data: {
+                    "username": elem.getAttribute("username"),
+                    "csrfmiddlewaretoken": $("input[name=csrfmiddlewaretoken]")[0].value,
+                },
+                success: function(ret){
+                    if (ret.status == 200){
+                        newFriend = `<li>\
+                            <figure>\
+                                <img src="${ret.image}" alt="" style="height:45px; width:45px;">\
+                                <span class="status f-${ret.status}"></span>\
+                            </figure>\
+                            <div class="friendz-meta">\
+                                <a href="/messages">${ret.f_name} ${ret.l_name}</a>\
+                                <i><a class="__cf_email__" data-cfemail="a0d7c9ced4c5d2d3cfccc4c5d2e0c7cdc1c9cc8ec3cfcd">[email&#160;protected]</a></i>\
+                            </div>\
+                        </li>`
+                        document.querySelector("#people-list").innerHTML += newFriend
+                    }
+                }
+            });	
+        }
+        $(".addFriend").click(function(){
+            window.addfriendrequest(this)
+        })
+    }
+</script>
+
+{% endblock %}

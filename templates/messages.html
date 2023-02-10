@@ -1,0 +1,156 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<title>{{try}}Messages</title>
+	<link rel="icon" href="{% static 'images/my-logo.png' %}" type="image/png" sizes="16x16">
+
+	<link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/color.css' %}">
+	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+	<link rel="stylesheet" href="{% static 'css/personal-style.css' %}">
+
+
+	<style>
+		#page-contents{
+    		display: grid;
+    		grid-template-columns: 10fr 3fr;
+		}
+		#page-contents div{
+    		max-width: 100% !important;
+		}
+		#page-contents .peoples-mesg-box{
+    		width: 100%;
+		}
+	</style>
+
+</head>
+<body>
+<!--<div class="se-pre-con"></div>-->
+<div class="theme-layout">
+	{% include 'navbar.html' %} {% block nav %} {% endblock %}
+
+	<section>
+		<div class="gap gray-bg" style="padding: 10px 0px;">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row" id="page-contents">
+							<div class="col-lg-6">
+								<div class="central-meta">
+									<div class="messages">
+										<h5 class="f-title"><i class="ti-bell"></i>All Messages <span class="more-options"><i class="fa fa-ellipsis-h"></i></span></h5>
+										<div class="message-box">
+											<div class="peoples-mesg-box">
+												<div class="conversation-head">
+													<figure><img src="{{toChat.image}}" alt=""></figure>
+													<span>{{toChat.f_name}} {{toChat.l_name}} <i>{{toChat.status}}</i></span>
+												</div>
+												<ul class="chatting-area">
+													{% for chats in toChat.chats %}
+														{% if chats.1 %}
+															<li class="you">
+															<figure><img src="{{toChat.image}}" alt=""></figure>
+															<p>{{chats.0}}</p>
+															</li>
+														{% else %}
+															<li class="me">
+															<figure><img src="{{self.image.url}}" alt=""></figure>
+															<p>{{chats.0}}</p>
+															</li>
+														{% endif %}
+													{% endfor %}
+												</ul>
+												<div class="message-text-container">
+													<form method="post" action="/messages">
+														{% csrf_token %}
+														<textarea name="message" required id="message_to_send"></textarea>
+														<input type="hidden" name="t" value="{{toChat.username}}"> 
+														<button title="send" type="button" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>	
+							</div><!-- centerl meta -->
+							<div class="col-lg-3">
+								<aside class="sidebar static">
+									{% include 'friends.html' %} {% block friends %} {% endblock %}
+
+								</aside>
+							</div><!-- sidebar -->
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>	
+	</section>
+</div>	
+	
+	<script src="{% static 'js/main.min.js' %}"></script>
+	<script src="{% static 'js/script.js' %}"></script>
+
+	<script>
+		function sendMessage(){
+			message = $("#message_to_send")[0].value
+			if (message.length){
+				data = {
+					message: $("#message_to_send")[0].value,
+					to_send: "{{toChat.username}}"
+				}
+				chatSocket.send(JSON.stringify(data))
+				
+				chatHTML = `\
+				<li class="me">\
+					<figure><img src="{{self.image.url}}" alt=""></figure>\
+					<p>${message}</p>\
+				</li>\
+				`
+				document.getElementsByClassName("chatting-area")[0].innerHTML += chatHTML
+				
+				$("#message_to_send")[0].value = ""
+			}
+			chatArea.scrollTop = chatArea.scrollHeight
+
+		}
+		window.onload = function(){
+			chatArea = document.getElementsByClassName("chatting-area")[0]
+			chatArea.scrollTop = chatArea.scrollHeight
+
+			window.chatSocket.onmessage = function(e) {
+				
+				const data = JSON.parse(e.data);
+				console.log(data.message);
+				curr_chatter = window.location.search.replace('?t=', '')
+				sender = data.sender
+
+				if(curr_chatter == sender){
+
+					chatHTML = `\
+						<li class="you">\
+							<figure><img src="{{toChat.image}}" alt=""></figure>\
+							<p class="sentMessage"></p>\
+						</li>\
+						`
+						
+					chatArea.innerHTML += chatHTML
+					allSentChats = chatArea.getElementsByClassName("sentMessage")
+					allSentChats[allSentChats.length-1].innerText = data.message
+					chatArea.scrollTop = chatArea.scrollHeight
+				}
+			};
+		}
+	</script>
+
+</body>	
+
+</html>

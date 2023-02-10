@@ -1,0 +1,73 @@
+{% load static %}
+{% block nav %}
+
+<div class="responsive-header">
+    <div class="mh-head first Sticky">
+        <span class="mh-btns-left">
+            <a class="" href="#menu"><i class="fa fa-align-justify"></i></a>
+        </span>
+        <span class="mh-text">
+            <a href="newsfeed.html" title=""><img src="{% static 'images/my-logo.png' %}" alt="" style="height: 50px; border-radius: 100%;"></a>
+        </span>
+    </div>
+    <div class="mh-head second">
+        <form class="mh-form">
+            <input name="searchUser" placeholder="search for friends" required>
+        </form>
+    </div>
+    <nav id="menu" class="res-menu">
+        <ul>
+            <div class="userInfo">
+                <div class="user-img" style="display: inline;">
+                    <img src="{% static 'images/resources/admin.jpg' %}" alt="">
+                    <span class="status f-online"></span>
+                </div>
+                <div class="username" style="display: inline;"><b>Janice Griffith</b></div>
+            </div>
+            <li class="set-online"><a href="#" title="" ><span class="status f-online"></span>online</a></li>
+            <li class="set-away"><a href="#" title="" ><span class="status f-away"></span>away</a></li>
+            <li class="set-offline"><a href="#" title="" ><span class="status f-off"></span>offline</a></li>
+            <li><a title=""><i class="ti-user"></i> view profile</a></li>
+            <li><a title=""><i class="ti-pencil-alt"></i>edit profile</a></li>
+            <li><a title=""><i class="ti-power-off"></i>log out</a></li>
+        </ul>
+    </nav>
+</div><!-- responsive header -->
+
+<div class="topbar stick">
+    <div class="logo">
+        <a title="" href="/"><img src="{% static 'images/my-logo.png' %}" alt="" style="height: 50px ;border-radius: 100%;"></a>
+    </div>
+
+    <div class="top-area">
+        <ul class="main-menu">
+            <form style="position: relative;">
+                <input type="text" name="searchUser" placeholder="   Search for friends...." required>
+                
+                <ul class="nearby-contct">
+                </ul>
+            
+            </form>
+
+        </ul>
+        <div class="userInfo">
+            <div id="userUsername" style="display: none;">{{user.username}}</div>
+            <div class="user-img">
+                <img src="{{self.image.url}}" alt="profile picture" style="height:45px; width:45px;">
+                <span class="status f-{{self.status}} pc"></span>
+                <div class="user-setting">
+                    <a href="#" class="set-online"><span class="status f-online"></span>online</a>
+                    <a href="#" class="set-away"><span class="status f-away"></span>away</a>
+                    <a href="#" class="set-offline"><span class="status f-off"></span>offline</a>
+                    <a href="#" class="view-profile"><i class="ti-user"></i> view profile</a>
+                    <a href="#" class="edit-profile"><i class="ti-pencil-alt"></i>edit profile</a>
+                    <a href="#" class="logout"><i class="ti-power-off"></i>log out</a>
+                </div>
+            </div>
+            <div class="username" style="display: inline;">{{user.first_name}} {{user.last_name}}</div>
+        </div>
+        <!-- <span class="ti-menu main-menu" data-ripple=""></span> -->
+    </div>
+</div><!-- topbar -->
+
+{% endblock %}
